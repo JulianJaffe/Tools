@@ -5,6 +5,7 @@ import time
 import cgi
 import traceback
 import cgitb; cgitb.enable()  # for troubleshooting
+from cswaConstants import selectWebapp
 from cswaUtils import *
 from cswaObjDetails import *
 
@@ -60,9 +61,14 @@ try:
             doEnumerateObjects(form,config)
         elif action == "Create Labels for Locations Only":
             doBarCodes(form,config)
+        elif action == "Start Intake":
+            doSetupIntake(form, config)
+        elif action == "View Intakes":
+            doProcedureSearch(form, config)
         elif action == config.get('info','updateactionlabel'):
             if   updateType == 'packinglist':  doPackingList(form,config)
             elif updateType == 'movecrate':    doUpdateLocations(form,config)
+            elif updateType == 'powermove':    doUpdateLocations(form,config)
             elif updateType == 'barcodeprint': doBarCodes(form,config)
             elif updateType == 'inventory':    doUpdateLocations(form,config)
             elif updateType == 'moveobject':   doUpdateLocations(form,config)
@@ -73,6 +79,7 @@ try:
             elif updateType == 'advsearch':    doAdvancedSearch(form,config)
             elif updateType == 'upload':       uploadFile(actualform,form,config)
             elif updateType == 'governmentholdings': doListGovHoldings(form, config)
+            elif updateType == 'intake':       doCommitIntake(form, config)
             elif updateType == 'editrel':      doRelationsEdit(form,config)
             elif updateType == 'makegroup':    makeGroup(form,config)
             elif action == "Recent Activity":
@@ -88,6 +95,7 @@ try:
         elif action == "Search":
             if   updateType == 'packinglist':  doLocationSearch(form,config,'nolist')
             elif updateType == 'movecrate':    doCheckMove(form,config)
+            elif updateType == 'powermove':    doCheckPowerMove(form,config)
             elif updateType == 'barcodeprint':
                 if form.get('ob.objno1'):
                     doOjectRangeSearch(form, config)
